@@ -34,6 +34,7 @@ $sql = "CREATE TABLE IF NOT EXISTS resource
 (
 ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 username VARCHAR(32),
+filename varchar(100),
 rawurl VARCHAR(200),
 posturl VARCHAR(200),
 datatype VARCHAR(20),
