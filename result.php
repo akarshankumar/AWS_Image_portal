@@ -4,15 +4,10 @@
 <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>index.php</title>
+        <title>File Upload</title>
 
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-
-        <!-- Optional theme -->
-debug2: channel 0: window 999074 sent adjust 49502n.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-
-
 </head>
 <body>
 <?php
@@ -38,28 +33,55 @@ if($_FILES['image']['name']==''){
 echo "Alert : No file selected!";
 exit();
 }
-else
-move_uploaded_file($image_tmp_name,"/var/www/uploads/temp_image");
-echo "File is valid and was successully uploaded";
-echo "<br />";
-echo "Here are some more debugging info:";
-echo "<br />";
-echo "<br />";
-print_r($_FILES);
-print "</pre>";
-echo "<br />";
+else {
+echo "Temp file  name: " + $_FILES['image']['tmp_name'];
 }
 
-$bucket = uniqid("php-sdk-sample-", true);
-echo "Creating bucket named {$bucket}\n";
+if (strpos($_FILES['image']['type'],'image') !== false) {
+    $temp_path = "/var/www/uploads/temp_image";
+    $file_type = "image";
+} else {
+
+	if (strpos($_FILES['image']['type'],'video') !== false) {
+	    $temp_path = "/var/www/uploads/temp_video";
+    	    $file_type = "video";
+	} else {
+	echo "Invalid File Type";
+	}	
+}
+echo "Temp Path: $temp_path";
+#move_uploaded_file($image_tmp_name,"/var/www/uploads/temp_image");
+echo '<pre>';
+if (move_uploaded_file($_FILES['image']['tmp_name'], $temp_path)) {
+    echo "File is valid, and was successfully uploaded.\n";
+	echo "<br />";
+	echo "Here are some more debugging info:";
+	echo "<br />";
+	echo "<br />";
+	print_r($_FILES);
+	print "</pre>";
+	echo "<br />";
+
+} else {
+    echo "Possible file upload attack!\n";
+}
+
+}
+$bucket = "{bucketname}";
+
+if($client->doesBucketExist($bucket)) {
+echo "Bucket exists!";
+} else {
+echo "Bucket doesn't exist, creating requested bucket.";
 $result = $client->createBucket(array(
     'Bucket' => $bucket
 ));
-
+echo "</br>";
+}
 $client->waitUntilBucketExists(array('Bucket' => $bucket));
 
-$key='myimage.jpg';
-$pathToFile='/var/www/uploads/temp_image';
+$key = $_FILES['image']['tmp_name'].$_FILES['image']['name'];
+$pathToFile=$temp_path;
 $result = $client->putObject(array(
     'Bucket'     => $bucket,
     'Key'        => $key,
@@ -76,10 +98,112 @@ $client->waitUntil('ObjectExists', array(
 ));
 
 echo "<br />";
-echo "Public URL to access image file is: ";
-echo $uploadfile = $result['ObjectURL'];
+echo "Public URL to access file is: ";
+$uploadfile = $result['ObjectURL'];
+echo $uploadfile;
 echo "<br />";
+
+echo "Connecting to database.";
+echo "</br>";
+$link = mysqli_connect("{dburl}","{dbusername}","{dbpassword}") or die("Error " . mysqli_error($link));
+/* check connection */
+if (mysqli_connect_errno()) {
+    printf("Connect failed: %s\n", mysqli_connect_error());
+    exit();
+}
+
+
+   # id INT NOT NULL AUTO_INCREMENT,
+   # name VARCHAR(200) NOT NULL,
+   # age INT NOT NULL,
+
+/* Prepared statement, stage 1: prepare */
+/* Prepared statement, stage 1: prepare */
+if (!($sql = $link->prepare("INSERT INTO rds_db.resource (id, username,rawurl,phone,email,filename,datatype) VALUES (NULL,?,?,?,?,?,?)"))) {
+    echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+}
+
+$id = 1;
+$name = $_REQUEST['name'];
+$phone = $_REQUEST['pnum'];
+$email = $_REQUEST['email'];
+$fname = preg_replace('-\W-','',date('m-d-Y H:i:s A e')).$_FILES['image']['name'];
+echo "File Name" . $fname;
+$sql->bind_param("ssssss",$_REQUEST['name'],$uploadfile, $_REQUEST['pnum'],$_REQUEST['email'],$fname,$_FILES['image']['type']);
+
+if (!$sql->execute()) {
+    echo "Execute failed: (" . $sql->errno . ") " . $sql->error;
+echo "<br />  ";
+}
+
+echo "<br />  ";
+printf("%d Row inserted.\n", $sql->affected_rows);
+
+
+/* explicit close recommended */
+$sql->close();
+
+if(!($link->real_query("SELECT * FROM rds_db.resource where rawurl='$uploadfile'"))){
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+}
+$res = $link->use_result();
+
+echo "<br />  ";
+echo "<br />  ";
+echo "Result set order...\n";
+while ($row = $res->fetch_assoc()) {
+    if (!$row){
+        echo "<br />  ";
+        echo "Empty Row";
+        }
+    echo "<br />  ";
+    echo " id = " . $row['ID'];
+    echo " Name = " . $row['username'];
+    echo " RawURL = " . $row['rawurl'];
+    echo " Phone = " . $row['phone'];
+    echo " email = " . $row['email'];
+    $uniqid = $row['ID'];
+}
+
+
+$link->close();
+
+
 ?>
-<img src="<?php echo $uploadfile; ?>" alt="picture" >
+
+<?php
+
+use Aws\Sqs\SqsClient;
+
+$client = SqsClient::factory(array(
+'region'  => 'us-east-1'
+));
+echo "</br>";
+echo "Row ID: " . $uniqid;
+
+$result = $client->sendMessage(array(
+    // QueueUrl is required
+    'QueueUrl' => '{sqsurl}',
+    // MessageBody is required
+    'MessageBody' => $uniqid,
+    'DelaySeconds' => 30
+));
+
+echo "</br>";
+echo "SQS Result :" . $result['MessageId'];
+echo "</br>";
+if ($file_type == 'image'){
+	echo "<img src=\"$uploadfile\" alt=\"picture\" >";
+}
+
+if ($file_type == 'video'){
+	echo "<video width=\"320\" height=\"240\" controls>";
+echo "<source src=\"movie.mp4\" type=\"video/mp4\">";
+echo "Your browser does not support the video tag.";
+echo "</video>";
+}
+
+
+?>
 </body>
 </html>
