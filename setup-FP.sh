@@ -45,6 +45,9 @@ sudo sed -i "s,{dbpassword},${dbpassword},g" wow.php
 
 mv /index.php /var/www/html
 mv /result.php /var/www/html
+mv /welcome.php /var/www/html
+mv /search.php /var/www/html
+mv /wow.php /var/www/html
 
 mv /composer.json /var/www/html
 mv /vendor /var/www/html
