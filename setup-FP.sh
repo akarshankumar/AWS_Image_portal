@@ -26,6 +26,9 @@ sudo -E apt-get -q -y install mysql-server  1>/tmp/11_mysqlserver.out 2>/tmp/11_
 sudo wget https://raw.githubusercontent.com/akarshankumar/itm544/master/index.php 1>/tmp/3_index.out 2>/tmp/3_index.err
 sudo wget https://raw.githubusercontent.com/akarshankumar/itm544/master/result.php 1>/tmp/4_result.out 2>/tmp/4_result.err
 sudo wget https://raw.githubusercontent.com/akarshankumar/itm544/master/composer.json 1>/tmp/5_composer.out 2>/tmp/5_composer.err
+sudo wget https://raw.githubusercontent.com/akarshankumar/itm544/master/welcome.php 1>/tmp/12_welcomephp.out 2>/tmp/12_welcomephp.err
+sudo wget https://raw.githubusercontent.com/akarshankumar/itm544/master/search.php 1>/tmp/13_searchphp.out 2>/tmp/13_searchphp.err
+sudo wget https://raw.githubusercontent.com/akarshankumar/itm544/master/wow.php 1>/tmp/14_wowphp.out 2>/tmp/14_wowphp.err
 
 sudo curl -sS https://getcomposer.org/installer | sudo php 1>/tmp/6_php.out 2>/tmp/6_php.err
 sudo php composer.phar install 1>/tmp/7_phar.out 2>/tmp/7_phar.err
@@ -35,6 +38,10 @@ sudo sed -i "s,{dbusername},${dbusername},g" result.php
 sudo sed -i "s,{dbpassword},${dbpassword},g" result.php
 sudo sed -i "s,{sqsurl},${sqsurl},g" result.php
 sudo sed -i "s,{bucketname},${bucketname},g" result.php
+
+sudo sed -i "s,{dburl},${dburl},g" wow.php
+sudo sed -i "s,{dbusername},${dbusername},g" wow.php
+sudo sed -i "s,{dbpassword},${dbpassword},g" wow.php
 
 mv /index.php /var/www/html
 mv /result.php /var/www/html
