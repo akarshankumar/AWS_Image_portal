@@ -14,7 +14,7 @@ echo "</br>";
 if (!function_exists('mysqli_init') && !extension_loaded('mysqli')) {
     echo 'We don\'t have mysqli!!!\n';
 }
-$link = mysqli_connect({dburl},{username},{password}) or die("Error " . mysqli_error($link));
+$link = mysqli_connect("{dburl}","{username}","{password}") or die("Error " . mysqli_error($link));
 
 $sql = 'CREATE DATABASE rds_db';
 if (mysqli_query($link, $sql)) {
