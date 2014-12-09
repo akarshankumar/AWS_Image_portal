@@ -14,7 +14,7 @@ sudo php composer.phar install 1>/tmp/7_phar.out 2>/tmp/7_phar.err
 mv /index.php /var/www/html
 mv /composer.json /var/www/html
 mv /vendor /var/www/html
-mv /vendor/var/www/html/result.txt /vendor/var/www/html/result.php
+mv /result.txt /var/www/html/result.php
 
 mkdir /var/www/uploads
 chmod 777 /var/www/uploads
