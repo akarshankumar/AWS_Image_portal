@@ -20,7 +20,7 @@ echo "User Email ID:       " . $_REQUEST['email'];
 echo "<br>";
 echo "<br />  ";
 
-$link = mysqli_connect("{dburl}","{dbusername}","{dbpassword}") or die("Error " . mysqli_error($link));
+$link = mysqli_connect("{dburlread}","{dbusername}","{dbpassword}") or die("Error " . mysqli_error($link));
 /* check connection */
 if (mysqli_connect_errno()) {
     printf("Connect failed: %s\n", mysqli_connect_error());
