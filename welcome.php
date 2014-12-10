@@ -18,12 +18,17 @@
 <h1>Select an option.</h1>
 
 <div class="form-group">
-<h2><a href="/index.php">Upload File.</a></h2>
+<h2><a href="/index.php">Upload the File.</a></h2>
 </div>
 
 <div class="form-group">
-<h2><a href="/search.php">Search File.</a></h2>
+<h2><a href="/search.php">Search for File.</a></h2>
 </div>
+
+<div class="form-group">
+<h2><a href="/subscribe.php">Subscribe SNS.</a></h2>
+</div>
+
 <center>
 </body>
 </html>
