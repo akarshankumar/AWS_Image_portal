@@ -19,7 +19,6 @@ echo "User Phone Number:  " . $_REQUEST['pnum'];
 echo "<br>";
 echo "User Email ID       " . $_REQUEST['email'];
 echo "<br>";
-echo "<br />  ";
 
 require 'vendor/autoload.php';
 
@@ -49,8 +48,7 @@ if (strpos($_FILES['image']['type'],'image') !== false) {
 	echo "Invalid File Type";
 	}	
 }
-echo "Temp Path: $temp_path";
-#move_uploaded_file($image_tmp_name,"/var/www/uploads/temp_image");
+
 echo '<pre>';
 if (move_uploaded_file($_FILES['image']['tmp_name'], $temp_path)) {
     echo "File is valid, and was successfully uploaded.\n";
@@ -149,7 +147,6 @@ if(!($link->real_query("SELECT * FROM rds_db.resource where rawurl='$uploadfile'
 $res = $link->use_result();
 
 echo "<br />  ";
-echo "<br />  ";
 echo "Result set order...\n";
 while ($row = $res->fetch_assoc()) {
     if (!$row){
@@ -164,11 +161,7 @@ while ($row = $res->fetch_assoc()) {
     echo " email = " . $row['email'];
     $uniqid = $row['ID'];
 }
-
-
 $link->close();
-
-
 ?>
 
 <?php
@@ -190,8 +183,6 @@ $result = $client->sendMessage(array(
 ));
 
 echo "</br>";
-echo "SQS Result :" . $result['MessageId'];
-echo "</br>";
 if ($file_type == 'image'){
 	echo "<img src=\"$uploadfile\" alt=\"picture\" >";
 }
@@ -202,6 +193,15 @@ echo "<source src=\"movie.mp4\" type=\"video/mp4\">";
 echo "Your browser does not support the video tag.";
 echo "</video>";
 }
+
+echo "<form enctype=\"multipart/form-data\" action=\"confirmsubscription.php\" method=\"POST\">";
+echo "<h5>Click on subscribe button to recieve notifications.</h5>";
+echo "<div class=\"form-group\">";
+echo " <input type=\"hidden\" name=\"email\" value=\"$email\">";
+echo " <input type=\"hidden\" name=\"phone\" value=\"$phone\"> ";
+echo "<input type=\"submit\" name=\"subscribe\" value=\"Subscribe\" />";
+echo "</div>";
+echo "</form>";
 
 
 ?>
