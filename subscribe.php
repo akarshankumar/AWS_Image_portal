@@ -18,8 +18,8 @@
 <form enctype="multipart/form-data" action="result.php" method="POST">
 <h5>(Please provide email id and phone number to subscribe to to recieve notification.)</h5>
 <div class="form-group">
-        <label for="pnum">Phone Number</label>
-        <input class="form-control" id="phone" name="phone" type="text" style="width: 300px;" value="" />
+        <label for="pnum">Phone Number (Format: 12223334444)</label>
+        <input class="form-control" id="phone" name="phone" type="number" style="width: 300px;" value="" />
 </div>
 
 <div class="form-group">
