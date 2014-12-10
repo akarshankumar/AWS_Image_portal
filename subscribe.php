@@ -19,7 +19,7 @@
 <h5>(Please provide email id and phone number to subscribe to to recieve notification.)</h5>
 <div class="form-group">
         <label for="pnum">Phone Number</label>
-        <input class="form-control" id="pnum" name="pnum" type="text" style="width: 300px;" value="" />
+        <input class="form-control" id="phone" name="phone" type="text" style="width: 300px;" value="" />
 </div>
 
 <div class="form-group">
