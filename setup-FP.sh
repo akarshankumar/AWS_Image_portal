@@ -31,7 +31,7 @@ sudo wget https://raw.githubusercontent.com/akarshankumar/itm544/master/welcome.
 sudo wget https://raw.githubusercontent.com/akarshankumar/itm544/master/search.php 1>/tmp/13_searchphp.out 2>/tmp/13_searchphp.err
 sudo wget https://raw.githubusercontent.com/akarshankumar/itm544/master/wow.php 1>/tmp/14_wowphp.out 2>/tmp/14_wowphp.err
 sudo wget https://raw.githubusercontent.com/akarshankumar/itm544/master/subscribe.php 1>/tmp/15_subscribephp.out 2>/tmp/14_subscribephp.err
-sudo wget https://raw.githubusercontent.com/akarshankumar/itm544/master/confirmsubscription.php 1>/tmp/14_confirmsubscriptionphp.out 2>/tmp/14_confirmsubscriptionphp.err
+sudo wget https://raw.githubusercontent.com/akarshankumar/itm544/master/confirmsubscription.php 1>/tmp/16_confirmsubscriptionphp.out 2>/tmp/16_confirmsubscriptionphp.err
 
 sudo curl -sS https://getcomposer.org/installer | sudo php 1>/tmp/6_php.out 2>/tmp/6_php.err
 sudo php composer.phar install 1>/tmp/7_phar.out 2>/tmp/7_phar.err
