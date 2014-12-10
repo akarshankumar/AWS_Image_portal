@@ -12,7 +12,7 @@ dbusername="<Give your DB username>"
 dbpassword="Give your DB password"
 sqsurl="<Give your SQS URL>"
 bucketname="<Give just your bucket name not the complete URL>"
-
+snsurl="<Give sns URL here>"
 sudo apt-get -y update  1>/tmp/1_update.out 2>/tmp/1_update.err
 sudo apt-get -y upgrade 1>/tmp/8_upgrade.out 2>/tmp/8_upgrade.err
 
@@ -30,6 +30,8 @@ sudo wget https://raw.githubusercontent.com/akarshankumar/itm544/master/composer
 sudo wget https://raw.githubusercontent.com/akarshankumar/itm544/master/welcome.php 1>/tmp/12_welcomephp.out 2>/tmp/12_welcomephp.err
 sudo wget https://raw.githubusercontent.com/akarshankumar/itm544/master/search.php 1>/tmp/13_searchphp.out 2>/tmp/13_searchphp.err
 sudo wget https://raw.githubusercontent.com/akarshankumar/itm544/master/wow.php 1>/tmp/14_wowphp.out 2>/tmp/14_wowphp.err
+sudo wget https://raw.githubusercontent.com/akarshankumar/itm544/master/subscribe.php 1>/tmp/15_subscribephp.out 2>/tmp/14_subscribephp.err
+sudo wget https://raw.githubusercontent.com/akarshankumar/itm544/master/confirmsubscription.php 1>/tmp/14_confirmsubscriptionphp.out 2>/tmp/14_confirmsubscriptionphp.err
 
 sudo curl -sS https://getcomposer.org/installer | sudo php 1>/tmp/6_php.out 2>/tmp/6_php.err
 sudo php composer.phar install 1>/tmp/7_phar.out 2>/tmp/7_phar.err
@@ -43,6 +45,8 @@ sudo sed -i "s,{bucketname},${bucketname},g" result.php
 sudo sed -i "s,{dburlread},${dburlread},g" wow.php
 sudo sed -i "s,{dbusername},${dbusername},g" wow.php
 sudo sed -i "s,{dbpassword},${dbpassword},g" wow.php
+
+sudo sed -i "s,{snsurl},${snsurl},g" confirmsubscription.php
 
 mv /index.php /var/www/html
 mv /result.php /var/www/html
