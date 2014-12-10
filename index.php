@@ -25,8 +25,8 @@
 </div>
 
 <div class="form-group">
-        <label for="pnum">Phone Number</label>
-        <input class="form-control" id="pnum" name="pnum" type="text" style="width: 300px;" value="" />
+        <label for="pnum">Phone Number (Format: 12223334444)</label>
+        <input class="form-control" id="pnum" name="pnum" type="nnumber" style="width: 300px;" value="" />
 </div>
 
 <div class="form-group">
