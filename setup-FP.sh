@@ -7,6 +7,7 @@
 
 # Don't remove quotes, replace values inside <> alongwith angular brackets.
 dburl="<Give your RDS DB URL>"
+dburlread="<Give the RDS read replica URL>"
 dbusername="<Give your DB username>"
 dbpassword="Give your DB password"
 sqsurl="<Give your SQS URL>"
@@ -39,7 +40,7 @@ sudo sed -i "s,{dbpassword},${dbpassword},g" result.php
 sudo sed -i "s,{sqsurl},${sqsurl},g" result.php
 sudo sed -i "s,{bucketname},${bucketname},g" result.php
 
-sudo sed -i "s,{dburl},${dburl},g" wow.php
+sudo sed -i "s,{dburlread},${dburlread},g" wow.php
 sudo sed -i "s,{dbusername},${dbusername},g" wow.php
 sudo sed -i "s,{dbpassword},${dbpassword},g" wow.php
 
