@@ -88,6 +88,8 @@ exit("Worker BOT may already be running!");
 
 echo "Woker BOT Started";
 sleep (5);
+try
+{
 while (!file_exists("/var/www/uploads/stop.txt"))
 {
 $messageBody = "";
@@ -255,8 +257,16 @@ $sql->close();
 $link->close();
 
 echo "Worker BOT stopped!!";
-
-} 
+}
+} catch (Exception $e)
+{
+if ($e->getMessage() ==  "The input receipt handle is invalid."){
+echo "Message queue seems to be empty. Shutting down Worker BOT";
+echo "</br>";
+echo "It can be restarted through "."<a href=\"/admin.php\">Admin</a>"." console.";
+rename("/var/www/uploads/start.txt","/var/www/uploads/stop.txt");
+}
+}
 ?>
 </body>
 </html>
