@@ -16,11 +16,24 @@ use Aws\Sns\SnsClient;
 $client = SnsClient::factory(array(
 'region'  => 'us-east-1'
 ));
-$topicarn = '{snsurl}';
+$topicarn = 'arn:aws:sns:us-east-1:223848885127:akumar25SNS';
 $smsendpoint=$_REQUEST['phone'];
 $emailendpoint=$_REQUEST['email'];
+$smssubscribeflag=1;
+$emailsubscribeflag=1;
 echo "<h2>Subscription Result.</h2>"."\n";
 echo"</br>";
+if(!$smsendpoint.trim()){
+$smsnull=1;
+}
+
+if(!$emailendpoint.trim()){
+$emailnull=1;
+}
+
+
+try
+{
 $result = $client->listSubscriptionsByTopic(array(
     // TopicArn is required
     'TopicArn' => $topicarn,
@@ -28,7 +41,7 @@ $result = $client->listSubscriptionsByTopic(array(
 ));
 foreach($result['Subscriptions'] as $sub){
 //echo $sub['Endpoint']."\n";
-if($sub['Endpoint'] == $smsendpoint)
+if(($sub['Endpoint'] == $smsendpoint) || ($smsnull==1))
 {
 $smssubscribeflag =1;
 break;
@@ -39,7 +52,7 @@ $smssubscribeflag =0;
 }
 foreach($result['Subscriptions'] as $sub){
 //echo $sub['Endpoint']."\n";
-if($sub['Endpoint'] == $emailendpoint)
+if(($sub['Endpoint'] == $emailendpoint) || ($emailnull==1))
 {
 $emailsubscribeflag =1;
 break;
@@ -48,8 +61,7 @@ break;
 $emailsubscribeflag =0;
 }
 }
-
-if(!$smssubscribeflag){
+if($smssubscribeflag==0){
 $result = $client->subscribe(array(
     // TopicArn is required
     'TopicArn' => $topicarn,
@@ -60,11 +72,15 @@ $result = $client->subscribe(array(
 echo "Subscription request sent to $smsendpoint"."\n";
 echo"</br>";
 } else {
+if($smsnull!=1){
 echo "$smsendpoint is already subscribed."."\n";
+}else{
+echo "Phone number not provided.";
+}
 echo"</br>";
 }
 
-if(!$emailsubscribeflag){
+if($emailsubscribeflag==0){
 $result = $client->subscribe(array(
     // TopicArn is required
     'TopicArn' => $topicarn,
@@ -75,9 +91,24 @@ $result = $client->subscribe(array(
 echo "Subscription request sent to $emailendpoint"."\n";
 echo"</br>";
 } else {
+if($emailnull!=1){
 echo "$emailendpoint is already subscribed."."\n";
+}else{
+echo "Email id not provided.";
+}
 echo"</br>";
 }
+} catch (Exception $e)
+{
+//if ($e->getMessage() == "The input receipt handle is invalid."){
+//echo $e->getMessage();
+if($e->getMessage()== "Invalid parameter: Unsupported SMS endpoint: $smsendpoint")
+{
+echo "Invalid number provided";
+}else{
+echo $e->getMessage();
+}
+}
+echo "</br><a href=\"/welcome.php\">Click here </a> to back to home page";
 
-echo "<a href=\"/welcome.php\">Click here </a> to back to home page";
 ?>
